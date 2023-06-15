@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model BooksApp.Controllers.HomeController
+
+@if(ViewData["User"] != null){
+    <div class="text-center" style="margin-top:100px">
+        <h3>You're already signed in</h3>
+        <button class="btn btn-link" onclick="location.href='@Url.Action("OnSignOut", "Home")'">Sign out?</button>
+    </div>
+}
+else{
+    <form method="post" action="/Home/OnSignIn" style="margin-top:100px">
+        <div class="mb-3">
+            <label for="login" class="form-label">Username</label>
+            <input asp-for="LogPass.login" type="text" class="form-control" id="login">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input asp-for="LogPass.password" type="password" class="form-control" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+}
+
+

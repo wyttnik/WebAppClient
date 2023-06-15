@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">All Books</h1>
+</div>
+<button type="button"
+        class="btn btn-light btn-lg"
+        id="btn-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+    </svg>
+</button>
+
+<div class="container">
+    @{
+        int i = 0;
+        var books = ((List<BookToReceive>)ViewData["Books"]);
+        while (i < books.Count)
+        {
+            <div class="row mt-4">
+                    <div class="col-md-3">
+                        <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i].Book_id})">
+                            <img src=@books[i].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                        </a>
+                    </div>
+                    @if(i + 1 < books.Count){
+                        <div class="col-md-3">
+                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+1].Book_id})">
+                                <img src=@books[i+1].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                            </a>
+                        </div>
+                    }
+
+                    @if (i + 2 < books.Count){
+                        <div class="col-md-3">
+                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+2].Book_id})">
+                                <img src=@books[i+2].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                            </a>
+                        </div>
+                    }
+                    @if (i + 3 < books.Count)
+                    {
+                        <div class="col-md-3">
+                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+3].Book_id})">
+                                <img src=@books[i+3].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                            </a>
+                        </div>
+                    }
+                </div>
+            i += 4;
+        }
+    }
+    
+</div>
+

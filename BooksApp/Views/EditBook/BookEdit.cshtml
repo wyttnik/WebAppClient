@@ -1,0 +1,452 @@
+﻿@{
+    var editableBook = (BookToReceive)ViewData["BookToEdit"];
+}
+@model BooksApp.Controllers.EditBookController
+
+<form id="edit-book-form" method="post" enctype="multipart/form-data"
+      action="@Url.Action("OnEdit", "EditBook", new{book=Newtonsoft.Json.JsonConvert.SerializeObject(editableBook)})" style="margin-top:100px">
+    <label for="book-title" class="form-label">Book title:</label>
+    <h1><input value="@editableBook.Title" asp-for="BookToEdit.Title" type="text" class="form-control" id="book-title" required></h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Book Cover</th>
+                <th>Publisher</th>
+                <th>Authors</th>
+                <th>Page Count</th>
+                <th>Language -- code</th>
+                <th>Publication Date</th>
+                <th>ISBN 13</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-md-1">
+                    <input asp-for="BookToEdit.FileUri" type="file" class="form-control" id="book-cover" accept="image/*">
+                    <img id="cover-preview" src="@editableBook.ImageUrl" alt="Preview" style="width: 150px; height: 200px;" />
+                </td>
+                <td class="col-md-1">
+                    <div id="publisher-exist-warning" style="display:none; color: red"></div>
+                    <label for="publisher-name" class="form-label"><i>Type publisher:</i></label>
+                    <input type="text" class="form-control" id="publisher-name" autocomplete="off">
+                    <div id="publisher-list"></div>
+                    <div id="res-publisher">
+                        <input asp-for="BookToEdit.Publisher_id" value="@editableBook.Publisher.Publisher_id" hidden />
+                        @editableBook.Publisher.Publisher_name
+                    </div>
+                </td>
+                <td class="col-md-3">
+                    <div id="author-exist-warning" style="display:none; color: red"></div>
+                    <label for="author-name" class="form-label"><i>Type author:</i></label>
+                    <input type="text" class="form-control" id="author-name" autocomplete="off">
+                    <div id="author-list"></div>
+                    <table class="table">
+                        <tbody id="res-names">
+                            @for (int i = 0; i < editableBook.Authors.Count; ++i){
+                                <tr>
+                                    <td>
+                                        <input asp-for="BookToEdit.AuthorsId[i]" value = "@editableBook.Authors[i].Author_id" hidden/>
+                                        @editableBook.Authors[i].Author_name
+                                        <svg id="cross-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+                <td class="col-md-1"><input value="@editableBook.Num_pages" asp-for="BookToEdit.Num_pages" type="number" class="form-control" id="page-count"></td>
+                <td class="col-md-3">
+                    <div id="language-exist-warning" style="display:none; color: red"></div>
+                    <label for="language-name" class="form-label"><i>Type language:</i></label>
+                    <input type="text" class="form-control" id="language-name" autocomplete="off">
+                    <div id="language-list"></div>
+                    <div id="res-language">
+                        <input asp-for="BookToEdit.Language_id" value="@editableBook.BookLanguage.Language_id" hidden />
+                        @editableBook.BookLanguage.Language_name -- @editableBook.BookLanguage.Language_code
+                    </div>
+                </td>
+                <td class="col-md-1"><input value="@editableBook.Publication_date.ToString("yyyy-MM-dd")" asp-for="BookToEdit.Publication_date" type="date" class="form-control" id="publication-date"></td>
+                <td class="col-md-2"><input value="@editableBook.Isbn13" asp-for="BookToEdit.Isbn13" type="text" class="form-control" id="book-isbn13" required></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row justify-content-between">
+        <div class="col-3 text-start">
+            <a class="btn btn-secondary" href="@Url.Action("GetBookDetails", "BookDetails", new {id = editableBook.Book_id})" role="button">
+                Cancel
+            </a>
+        </div>
+        <div class="col-3 text-end">
+            <div>
+                <button id="edit-submit" type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+    
+</form>
+
+<script type="text/javascript">
+    // from controller
+    const book = @Html.Raw(Json.Serialize(ViewData["BookToEdit"]));
+    const authors = @Html.Raw(Json.Serialize(ViewData["Authors"]));
+    const publishers = @Html.Raw(Json.Serialize(ViewData["Publishers"]));
+    const languages = @Html.Raw(Json.Serialize(ViewData["Languages"]));
+
+    // elements from above
+    let inputImg = document.getElementById("book-cover");
+    const previewImg = document.getElementById("cover-preview");
+    const submitbtn = document.getElementById("edit-submit");
+    const editForm = document.getElementById("edit-book-form");
+
+    const authorList = document.getElementById("author-list");
+    const authorNameInput = document.getElementById("author-name");
+    const namesForEdit = document.getElementById("res-names");
+    const authorWarningDiv = document.getElementById("author-exist-warning");
+
+    const resPublisher = document.getElementById("res-publisher");
+    const publisherNameInput = document.getElementById("publisher-name");
+    const publisherList = document.getElementById("publisher-list");
+    const publisherWarningDiv = document.getElementById("publisher-exist-warning");
+
+    const resLanguage = document.getElementById("res-language");
+    const languageNameInput = document.getElementById("language-name");
+    const languageList = document.getElementById("language-list");
+    const languageWarningDiv = document.getElementById("language-exist-warning");
+
+    const titleInput = document.getElementById("book-title");
+    const countInput = document.getElementById("page-count");
+    const dateInput = document.getElementById("publication-date");
+    const isbnInput = document.getElementById("book-isbn13");
+
+    initEnterListeners([titleInput, countInput, dateInput, isbnInput, authorNameInput, languageNameInput, publisherNameInput]);
+
+    // enter listeners
+    function initEnterListeners(elements) {
+        elements.forEach(element => {
+            element.onkeydown = (e) => {
+                if (e.keyCode === 13) e.preventDefault();
+            }
+        });
+    }
+
+    // what is below author input right now
+    let currentName = "";
+    let currentIds = [];
+
+    // what is below publisher input right now
+    let currentPublisherName ="";
+
+    // what is below language input right now
+    let currentLanguageName = "";
+
+    // warning divs
+    let authorWarningFade = setTimeout(authorWarningClose, 2000),
+        publisherWarningFade = setTimeout(publisherWarningClose, 2000),
+        languageWarningFade = setTimeout(languageWarningClose, 2000);
+
+    // click listeneres for authors of editable book
+    for (let i = 0; i < namesForEdit.children.length; ++i) {
+        const oldAuthor = namesForEdit.children[i];
+        oldAuthor.children[0].children[1].addEventListener('click', (e)=>{
+            oldAuthor.remove();
+            reIndex();
+        });
+    }
+
+    // reindex list items of AuthorsId, if not done then some data will not be bound to model
+    function reIndex(){
+        for (let i = 0; i < namesForEdit.children.length; ++i) {
+            const curTd = namesForEdit.children[i];
+            curTd.children[0].children[0].setAttribute("name", "BookToEdit.AuthorsId["+i+"]");
+        }
+    }
+
+    // updatind ids of authors that are presented at the moment
+    function checkAuthorList(){
+        const currentNames = document.getElementById("res-names");
+        const trs = currentNames.children;
+        const ids = [];
+        for (let i = 0; i < trs.length; ++i){
+            ids.push(trs[i].children[0].children[0].getAttribute("value"));
+        }
+        currentIds = ids;
+    }
+
+    //////////////
+    // hiding warning messages, done with functions so that thet can be used with setTimeout
+    function authorWarningClose(){
+        authorWarningDiv.style.display = 'none';
+    }
+
+    function publisherWarningClose() {
+        publisherWarningDiv.style.display = 'none';
+    }
+
+    function languageWarningClose() {
+        languageWarningDiv.style.display = 'none';
+    }
+    // -------------------------------------
+
+    //////////////
+    // actions done after click on one of items in dropdown lists
+    function itemClick(e){
+        for (let i = 0; i < currentIds.length; ++i){
+            if (e.currentTarget.getAttribute("author-id") == currentIds[i]) {
+                authorWarningDiv.innerText = "Author is already in list";
+                authorWarningDiv.style.display = 'block';
+                clearTimeout(authorWarningFade);
+                authorWarningFade = setTimeout(authorWarningClose, 2000);
+                return;
+            }
+        }
+        clearTimeout(authorWarningFade);
+        authorWarningDiv.style.display = 'none';
+        
+
+        const tableItem = document.createElement("tr");
+        const tableInnerItem = document.createElement("td");
+        const input = document.createElement("input");
+        const closeIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        closeIcon.id = "cross-icon";
+        closeIcon.setAttribute("width", "25");
+        closeIcon.setAttribute("height", "25");
+        closeIcon.setAttribute("fill", "currentColor");
+        closeIcon.setAttribute("viewBox", "0 0 16 16");
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", "M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z");
+        closeIcon.appendChild(path);
+        closeIcon.onclick = (e) => {
+            tableItem.remove();
+            reIndex();
+        }
+
+        input.setAttribute("value", e.currentTarget.getAttribute("author-id"));
+        input.hidden = true;
+        input.name = 'BookToEdit.AuthorsId[' + currentIds.length + ']';
+
+        tableInnerItem.appendChild(input);
+        tableInnerItem.append(e.currentTarget.innerText);
+        tableInnerItem.appendChild(closeIcon);
+
+        tableItem.appendChild(tableInnerItem);
+        namesForEdit.appendChild(tableItem);
+    }
+
+    function publisherItemClick(e) {
+        if (e.currentTarget.getAttribute("publisher-id") == resPublisher.children[0].getAttribute("value")) {
+            publisherWarningDiv.innerText = "Publisher is already taken";
+            publisherWarningDiv.style.display = 'block';
+            clearTimeout(publisherWarningFade);
+            publisherWarningFade = setTimeout(publisherWarningClose, 2000);
+            return;
+        }
+        clearTimeout(publisherWarningFade);
+        publisherWarningDiv.style.display = 'none';
+
+        const input = document.createElement("input");
+        input.setAttribute("value", e.currentTarget.getAttribute("publisher-id"));
+        input.hidden = true;
+        input.name = 'BookToEdit.Publisher_id';
+
+        resPublisher.replaceChildren(input,e.currentTarget.innerText);
+    }
+
+    function languageItemClick(e, language_code) {
+        if (e.currentTarget.getAttribute("language-id") == resLanguage.children[0].getAttribute("value")) {
+            languageWarningDiv.innerText = "Language is already taken";
+            languageWarningDiv.style.display = 'block';
+            clearTimeout(languageWarningFade);
+            languageWarningFade = setTimeout(languageWarningClose, 2000);
+            return;
+        }
+        clearTimeout(languageWarningFade);
+        languageWarningDiv.style.display = 'none';
+
+        const input = document.createElement("input");
+        input.setAttribute("value", e.currentTarget.getAttribute("language-id"));
+        input.hidden = true;
+        input.name = 'BookToEdit.Language_id';
+
+        resLanguage.replaceChildren(input, e.currentTarget.innerText + " -- " + language_code);
+    }
+    // -------------------------------------
+    
+    //////////////
+    // publisher, authors and language dropdown lists creation
+    function createAuthorList(authorName) {
+        currentName = authorName;
+        const targetAuthors = [];
+        const name = authorName.replaceAll(" ", "");
+        for (let i = 0; i < authors.length; ++i) {
+            if (authors[i].author_name.replaceAll(" ", "").substring(0, name.length).includes(name)) {
+                targetAuthors.push({ author_name: authors[i].author_name, author_id: authors[i].author_id});
+            }
+        }
+        const list = document.createElement("table");
+        const tbody = document.createElement("tbody");
+        list.className = "table table-bordered table-hover";
+        list.id = "names-expand-list";
+        targetAuthors.forEach(author => {
+            const item = document.createElement("tr");
+            item.setAttribute("author-id", author.author_id);
+            const innerItem = document.createElement("td");
+            innerItem.className = "names-expand-td";
+            innerItem.textContent = author.author_name;
+            item.appendChild(innerItem);
+            tbody.appendChild(item);
+            item.onclick = (e) => itemClick(e);
+        });
+        list.appendChild(tbody);
+        authorList.replaceChildren(list);
+    }
+
+    function createPublisherList(publisherName) {
+        currentPublisherName = publisherName;
+        const targetPublishers = [];
+        const name = publisherName.replaceAll(" ", "");
+        for (let i = 0; i < publishers.length; ++i) {
+            if (publishers[i].publisher_name.replaceAll(" ", "").substring(0, name.length).includes(name)) {
+                targetPublishers.push({ publisher_name: publishers[i].publisher_name, publisher_id: publishers[i].publisher_id });
+            }
+        }
+        const list = document.createElement("table");
+        const tbody = document.createElement("tbody");
+        list.className = "table table-bordered table-hover";
+        list.id = "names-expand-list";
+        targetPublishers.forEach(publisher => {
+            const item = document.createElement("tr");
+            item.setAttribute("publisher-id", publisher.publisher_id);
+            const innerItem = document.createElement("td");
+            innerItem.className = "names-expand-td";
+            innerItem.textContent = publisher.publisher_name;
+            item.appendChild(innerItem);
+            tbody.appendChild(item);
+            item.onclick = (e) => publisherItemClick(e);
+        });
+        list.appendChild(tbody);
+        publisherList.replaceChildren(list);
+    }
+
+    function createLanguageList(languageName) {
+        currentLanguageName = languageName;
+        const targetLanguages = [];
+        const name = languageName.replaceAll(" ", "");
+        for (let i = 0; i < languages.length; ++i) {
+            if (languages[i].language_name.replaceAll(" ", "").substring(0, name.length).includes(name)) {
+                targetLanguages.push({ language_name: languages[i].language_name, 
+                                       language_id: languages[i].language_id,
+                                       language_code: languages[i].language_code});
+            }
+        }
+        const list = document.createElement("table");
+        const tbody = document.createElement("tbody");
+        list.className = "table table-bordered table-hover";
+        list.id = "names-expand-list";
+        targetLanguages.forEach(language => {
+            const item = document.createElement("tr");
+            item.setAttribute("language-id", language.language_id);
+            const innerItem = document.createElement("td");
+            innerItem.className = "names-expand-td";
+            innerItem.textContent = language.language_name;
+            item.appendChild(innerItem);
+            tbody.appendChild(item);
+            item.onclick = (e) => languageItemClick(e, language.language_code);
+        });
+        list.appendChild(tbody);
+        languageList.replaceChildren(list);
+    }
+    // -------------------------------------
+
+    //////////////
+    // listeners for publisher, authors and language inputs
+    authorNameInput.onkeyup = (e) => {
+        if (e.keyCode === 13) {
+            if (authorList.children[0].children[0].childElementCount === 0) {
+                authorWarningDiv.innerText = "No such author exists";
+                authorWarningDiv.style.display = 'block';
+                clearTimeout(authorWarningFade);
+                authorWarningFade = setTimeout(authorWarningClose, 2000);
+                return;
+            }
+        }
+
+        clearTimeout(authorWarningFade);
+        authorWarningDiv.style.display = 'none';
+        createAuthorList(e.currentTarget.value);
+    }
+
+    publisherNameInput.onkeyup = (e) => {
+        if (e.keyCode === 13) {
+            if (publisherList.children[0].children[0].childElementCount === 0) {
+                publisherWarningDiv.innerText = "No such publisher exists";
+                publisherWarningDiv.style.display = 'block';
+                clearTimeout(publisherWarningFade);
+                publisherWarningFade = setTimeout(publisherWarningClose, 2000);
+                return;
+            }
+        }
+
+        clearTimeout(publisherWarningFade);
+        publisherWarningDiv.style.display = 'none';
+        createPublisherList(e.currentTarget.value);
+    }
+
+    languageNameInput.onkeyup = (e) => {
+        if (e.keyCode === 13){
+            if(languageList.children[0].children[0].childElementCount === 0){
+                languageWarningDiv.innerText = "No such language exists";
+                languageWarningDiv.style.display = 'block';
+                clearTimeout(languageWarningFade);
+                languageWarningFade = setTimeout(languageWarningClose, 2000);
+                return;
+            }
+        }
+        
+        clearTimeout(languageWarningFade);
+        languageWarningDiv.style.display = 'none';
+        createLanguageList(e.currentTarget.value);
+    }
+    // -------------------------------------
+
+    // updating preview of the book cover
+    inputImg.onchange = _ => {
+
+        const [img] = inputImg.files;
+        if (img) previewImg.src = URL.createObjectURL(img);
+    }
+
+    //////////////
+    //  actions performed after click on publisher, authors and language dropdown lists
+    document.onclick = (e) => {
+        if (authorNameInput.contains(e.target)) {
+            checkAuthorList();
+            createAuthorList(currentName);
+            authorList.style.display = 'block';
+            publisherList.style.display = 'none';
+            languageList.style.display = 'none';
+        }
+        else if (publisherNameInput.contains(e.target)) {
+            createPublisherList(currentPublisherName);
+            authorList.style.display = 'none';
+            publisherList.style.display = 'block';
+            languageList.style.display = 'none';
+        }
+        else if (languageNameInput.contains(e.target)) {
+            createLanguageList(currentLanguageName);
+            authorList.style.display = 'none';
+            publisherList.style.display = 'none';
+            languageList.style.display = 'block';
+        }
+        else {
+            authorList.style.display = 'none';
+            publisherList.style.display = 'none';
+            languageList.style.display = 'none';
+        }
+    }
+    // -------------------------------------
+    
+</script>
+               

@@ -1,0 +1,72 @@
+﻿@{
+    var book = (BookToReceive)ViewData["Book"];
+    ViewData["Title"] = book.Title;
+}
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Publisher</th>
+            <th>Authors</th>
+            <th>Page Count</th>
+            <th>Language -- code</th>
+            <th>Publication Date</th>
+            <th>ISBN 13</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src=@book.ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;"></td>
+            <td>@book.Publisher.Publisher_name</td>
+            <td>
+                <table class="table table-hover">
+                    @foreach (var author in book.Authors)
+                    {
+                        <tr>
+                            <td>@author.Author_name</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td>@book.Num_pages</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>@book.BookLanguage.Language_name -- @book.BookLanguage.Language_code</td>
+                    </tr>
+                </table>
+            </td>
+            <td>@book.Publication_date</td>
+            <td>@book.Isbn13</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-3 text-start">
+            <a class="btn btn-light" href="@Url.Action("Index", "Home")" role="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg>
+                Back to all books
+            </a>
+        </div>
+        @if ((string)ViewData["Role"] == "admin"){
+            <div class="col-3 text-end">
+                <div>
+                    <a class="btn btn-secondary" href="@Url.Action("EditBook", "EditBook",
+                            new {editBook = Newtonsoft.Json.JsonConvert.SerializeObject(book)})" role="button">
+                        Edit
+                    </a>
+                    <a class="btn btn-danger" href="@Url.Action("OnDelete", "EditBook",
+                            new {bookId = book.Book_id})" role="button">
+                        Delete
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

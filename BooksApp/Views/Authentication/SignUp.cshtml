@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var successMessage = (string)ViewData["SuccessMessage"];
+    var errorMessage = (string)ViewData["ErrorMessage"];
+}
+@model BooksApp.Controllers.AuthenticationController
+
+@if (successMessage.Length != 0)
+{
+    <div class="text-center" style="margin-top:100px">
+        <h3>@successMessage</h3>
+        <button class="btn btn-light" onclick="location.href='@Url.Action("SignIn", "Authentication")'">Sign in</button>
+    </div>
+}
+else {
+    <form method="post" action="/Authentication/OnSignUp" style="margin-top:100px">
+        @if (errorMessage.Length != 0)
+        {
+            <div>
+                <i style="color:red">@errorMessage</i>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="login" class="form-label">Username for account</label>
+            <input asp-for="LogPass.login" type="text" class="form-control" id="login" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password for account</label>
+            <input asp-for="LogPass.password" type="password" class="form-control" id="password" required>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary" style="margin-right:50px">Sign up</button>
+            Already have an account? Try to <a class="link-opacity-100" href="@Url.Action("SignIn", "Authentication")">sign in</a>
+        </div>
+    </form>
+}
+
+
+
+

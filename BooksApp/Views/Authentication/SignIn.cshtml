@@ -1,0 +1,33 @@
+﻿@{
+    var errorMessage = (string)ViewData["ErrorMessage"];
+}
+@model BooksApp.Controllers.AuthenticationController
+
+@if(ViewData["Login"] != null){
+    <div class="text-center" style="margin-top:100px">
+        <h3>You're already signed in</h3>
+        <button class="btn btn-link" onclick="location.href='@Url.Action("OnSignOut", "Authentication")'">Sign out?</button>
+    </div>
+}
+else{
+    <form method="post" action="/Authentication/OnSignIn" style="margin-top:100px">
+        @if (errorMessage.Length != 0)
+        {
+            <div>
+                <i style="color:red">@errorMessage</i>
+            </div>
+        }
+        <div class="mb-3">
+            <label for="login" class="form-label">Username</label>
+            <input asp-for="LogPass.login" type="text" class="form-control" id="login" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input asp-for="LogPass.password" type="password" class="form-control" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+
+}
+
+

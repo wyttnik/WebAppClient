@@ -1,5 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    var errorMessage = (string)ViewData["ErrorMessage"];
+    var books = ((List<BookToReceive>)ViewData["Books"]);
 }
 
 <div class="text-center">
@@ -15,43 +16,85 @@
 
 <div class="container">
     @{
+        if (errorMessage.Length != 0){
+                <div>
+                    <h5 style="color:red;"><i>You must sign in to view book details!</i></h5>
+                </div>
+        }
         int i = 0;
-        var books = ((List<BookToReceive>)ViewData["Books"]);
+        
         while (i < books.Count)
         {
-            <div class="row mt-4">
-                    <div class="col-md-3">
-                        <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i].Book_id})">
+            <div class="row mt-4 align-items-center">
+                @if (((string)ViewData["Role"] == "admin") && i == books.Count) {
+                    <div class="col col-md-3" style="margin-left: 45px">
+                        <a class="btn btn-secondary btn-lg" id="btn-add-book" role="button" href="@Url.Action("PostBook", "NewBook")">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                        </a>
+                    </div>
+                }
+                else{
+                    <div class="col col-md-3">
+                        <a href="@Url.Action("GetBookDetails", "BookDetails", new {id=books[i].Book_id})">
                             <img src=@books[i].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
                         </a>
                     </div>
-                    @if(i + 1 < books.Count){
-                        <div class="col-md-3">
-                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+1].Book_id})">
-                                <img src=@books[i+1].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
-                            </a>
-                        </div>
-                    }
+                }
 
-                    @if (i + 2 < books.Count){
-                        <div class="col-md-3">
-                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+2].Book_id})">
-                                <img src=@books[i+2].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
-                            </a>
-                        </div>
-                    }
-                    @if (i + 3 < books.Count)
-                    {
-                        <div class="col-md-3">
-                            <a href="@Url.Action("GetBookDetails", "Home", new {id=books[i+3].Book_id})">
-                                <img src=@books[i+3].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
-                            </a>
-                        </div>
-                    }
+                @if(i + 1 < books.Count){
+                    <div class="col col-md-3">
+                        <a href="@Url.Action("GetBookDetails", "BookDetails", new {id=books[i+1].Book_id})">
+                            <img src=@books[i+1].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                        </a>
+                    </div>
+                }
+
+                @if (i + 2 < books.Count){
+                    <div class="col col-md-3">
+                        <a href="@Url.Action("GetBookDetails", "BookDetails", new {id=books[i+2].Book_id})">
+                            <img src=@books[i+2].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                        </a>
+                    </div>
+                }
+
+                @if (i + 3 < books.Count)
+                {
+                    <div class="col col-md-3">
+                        <a href="@Url.Action("GetBookDetails", "BookDetails", new {id=books[i+3].Book_id})">
+                            <img src=@books[i+3].ImageUrl alt="kokoko" class="img-responsive alignleft" style="width: 150px; height: 200px;">
+                        </a>
+                    </div>
+                }
+
+                @if (((string)ViewData["Role"] == "admin") && (i + 1 == books.Count || i + 2 == books.Count || i + 3 == books.Count))
+                {
+                    <div id="row-add-btn" class="col col-md-3">
+                        <a class="btn btn-secondary btn-lg" id="btn-add-book" role="button" href="@Url.Action("PostBook", "NewBook")">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                        </a>
+                    </div>
+                }
+            </div>
+            @if (((string)ViewData["Role"] == "admin") && ((i + 4) == books.Count))
+            {
+                <div class="row align-items-center mt-4">
+                    <div style="width: 150px; height: 200px;margin-left: 45px;margin-top: 100px">
+                        <a class="btn btn-secondary btn-lg" id="btn-add-book" role="button" href="@Url.Action("PostBook", "NewBook")">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
+            }
             i += 4;
         }
     }
     
 </div>
 
+<script src="~/js/index.js" asp-append-version="true"></script>

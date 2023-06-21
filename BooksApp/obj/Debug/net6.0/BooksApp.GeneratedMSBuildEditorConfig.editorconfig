@@ -15,6 +15,22 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\server\ind\test\WebAppClient\BooksApp
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Authentication/SignIn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cU2lnbkluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Authentication/SignUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cU2lnblVwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/server/ind/test/WebAppClient/BooksApp/Views/BookDetails/BookDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0RldGFpbHNcQm9va0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/server/ind/test/WebAppClient/BooksApp/Views/EditBook/BookEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWRpdEJvb2tcQm9va0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/server/ind/test/WebAppClient/BooksApp/Views/Home/BookDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCb29rRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -29,6 +45,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/server/ind/test/WebAppClient/BooksApp/Views/Home/SignUp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWduVXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/server/ind/test/WebAppClient/BooksApp/Views/NewBook/BookAdd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Qm9va1xCb29rQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/server/ind/test/WebAppClient/BooksApp/Views/Shared/Error.cshtml]

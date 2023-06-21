@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\server\\ind\\test\\WebAppClient\\BooksApp\\BooksApp.csproj",
+      "projectUniqueName": "D:\\server\\ind\\BooksApp\\BooksApp\\BooksApp.csproj",
       "projectName": "BooksApp",
-      "projectPath": "D:\\server\\ind\\test\\WebAppClient\\BooksApp\\BooksApp.csproj",
+      "projectPath": "D:\\server\\ind\\BooksApp\\BooksApp\\BooksApp.csproj",
       "packagesPath": "C:\\Users\\thevl\\.nuget\\packages\\",
-      "outputPath": "D:\\server\\ind\\test\\WebAppClient\\BooksApp\\obj\\",
+      "outputPath": "D:\\server\\ind\\BooksApp\\BooksApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\thevl\\AppData\\Roaming\\NuGet\\NuGet.Config",

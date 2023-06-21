@@ -8,45 +8,45 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BooksApp
 build_property.RootNamespace = BooksApp
-build_property.ProjectDir = D:\server\ind\BooksApp\BooksApp\
+build_property.ProjectDir = D:\server\ind\test\WebAppClient\BooksApp\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\server\ind\BooksApp\BooksApp
+build_property.MSBuildProjectDirectory = D:\server\ind\test\WebAppClient\BooksApp
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Home/BookDetails.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Home/BookDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCb29rRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Home/Index.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Home/SignIn.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Home/SignIn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWduSW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Home/SignUp.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Home/SignUp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Shared/Error.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/_ViewImports.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/_ViewStart.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/server/ind/BooksApp/BooksApp/Views/Shared/_Layout.cshtml]
+[D:/server/ind/test/WebAppClient/BooksApp/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-n6838pk3cs

@@ -23,3 +23,22 @@ body {
   right: 40px;
   display: none;
 }
+
+#names-expand-list{
+    display: block;
+    position: fixed;
+    max-height: 300px;
+    min-height: fit-content;
+    width: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+}
+
+.names-expand-td {
+    width: 280px;
+}
+
+#cross-icon {
+    float:right;
+}

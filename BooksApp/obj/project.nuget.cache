@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KgmiXE7PyFhG2jUX81WWaW4gSKy/eR+48rNP0FsB/mOlqOyKIBDlkJOTp4Z9UPnNcT450DBg3k7wqhCBLXxxNA==",
+  "dgSpecHash": "Wj7yr4GTffkDOT6iWwvJtqyuUGDBNbv97HwqJg/JEcB0fJI5iwnkEbzbAkFFZrAOzEHo0XUmJLWeQswu08kQgA==",
   "success": true,
-  "projectFilePath": "D:\\server\\ind\\BooksApp\\BooksApp\\BooksApp.csproj",
+  "projectFilePath": "D:\\server\\ind\\test\\WebAppClient\\BooksApp\\BooksApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\thevl\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],

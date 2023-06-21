@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BooksApp.Models
+namespace RestProject.Models
 {
-    public class BookToTransfer
+    public class BookToEdit
     {
-        public int Book_id { get; set; }
         public string Title { get; set; } = null!;
         public string Isbn13 { get; set; } = null!;
         public int Num_pages { get; set; }
@@ -16,5 +15,7 @@ namespace BooksApp.Models
 
         [NotMapped]
         public IFormFile? FileUri { get; set; }
+
+        public List<int> AuthorsId { get; set; } = new();
     }
 }

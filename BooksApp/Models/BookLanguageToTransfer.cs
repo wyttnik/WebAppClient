@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace BooksApp.Models
 {
     public class BookLanguageToTransfer
